@@ -6,7 +6,7 @@ import threading
 
 app = Flask(__name__)
 
-@app.route('/pull')
+@app.route('/pull', methods=['GET', 'POST','DELETE', 'PATCH'])
 def pull():
     os.system(f"./pull.sh")
     return "Building job started. Please wait this may take some time"
