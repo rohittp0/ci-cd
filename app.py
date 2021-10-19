@@ -6,9 +6,9 @@ import threading
 
 app = Flask(__name__)
 
-@app.route('/app/<branch>')
-def main(branch):
-     os.system(f"./pull.sh")
+@app.route('/pull')
+def pull():
+    os.system(f"./pull.sh")
     return "Building job started. Please wait this may take some time"
 
 if __name__ == '__main__':
