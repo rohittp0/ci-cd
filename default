@@ -104,12 +104,14 @@ server {
         }
         
         location /static {
-                root /home/user/hsavailability/static;
+                autoindex on;
+                root /var/www/html;
                 try_files $uri $uri/ =404;
         }
 
         location /media {
-                root /home/user/hsavailability/media;
+                autoindex on;
+                root /var/www/html;
                 try_files $uri $uri/ =404;
         }
 
