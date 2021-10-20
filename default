@@ -119,6 +119,54 @@ server {
 }
 
 server {
+
+        listen 3141;
+        server_name nidhin;
+
+        ssl_certificate /etc/ssl/certs/nginx-selfsigned.crt;
+        ssl_certificate_key /etc/ssl/private/nginx-selfsigned.key;
+        ssl_dhparam /etc/ssl/certs/dhparam.pem;
+
+        ssl on;
+        ssl_session_cache  builtin:1000  shared:SSL:10m;
+        ssl_protocols  TLSv1 TLSv1.1 TLSv1.2;
+        ssl_ciphers HIGH:!aNULL:!eNULL:!EXPORT:!CAMELLIA:!DES:!MD5:!PSK:!RC4;
+        ssl_prefer_server_ciphers on;
+
+        access_log            /var/log/nginx/jenkins.nidhin.access.log;
+        
+        location / {
+                autoindex on;
+                index index.html;
+                root /home/user/hopital-availabilty-frontend-nidhin/build;
+        }
+}
+
+server {
+
+        listen 2997;
+        server_name sanu;
+
+        ssl_certificate /etc/ssl/certs/nginx-selfsigned.crt;
+        ssl_certificate_key /etc/ssl/private/nginx-selfsigned.key;
+        ssl_dhparam /etc/ssl/certs/dhparam.pem;
+
+        ssl on;
+        ssl_session_cache  builtin:1000  shared:SSL:10m;
+        ssl_protocols  TLSv1 TLSv1.1 TLSv1.2;
+        ssl_ciphers HIGH:!aNULL:!eNULL:!EXPORT:!CAMELLIA:!DES:!MD5:!PSK:!RC4;
+        ssl_prefer_server_ciphers on;
+
+        access_log            /var/log/nginx/jenkins.sanu.access.log;
+        
+        location / {
+                autoindex on;
+                index index.html;
+                root /home/user/hopital-availabilty-frontend-sanu/build;
+        }
+}
+
+server {
     listen 80;
     return 301 https://$host$request_uri;
 }
