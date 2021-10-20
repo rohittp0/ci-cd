@@ -105,11 +105,13 @@ server {
         
         location /static {
                 autoindex on;
+                index index.html;
                 root /home/user/hsavailability/static;
         }
         
         location /media {
                 autoindex on;
+                index index.html;
                 root /home/user/hsavailability/media;
         }
 
