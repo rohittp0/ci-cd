@@ -7,6 +7,7 @@ DIFFCOMM=$(git fetch origin --quiet; git rev-list HEAD..."$UPSTREAM" --count)
 if [ "$DIFFCOMM" -gt 0 ]; then
   echo "Pulling $UPSTREAM" >> /home/user/update_log
   git pull
+  yarn ci
   yarn build
 else
   echo "master Upto date" >> /home/user/update_log
@@ -19,6 +20,7 @@ DIFFCOMM=$(git fetch origin --quiet; git rev-list HEAD..."$UPSTREAM" --count)
 if [ "$DIFFCOMM" -gt 0 ]; then
   echo "Pulling $UPSTREAM" >> /home/user/update_log
   git pull
+  yarn ci
   yarn build
 else
   echo "nidhin Upto date" >> /home/user/update_log
@@ -31,6 +33,7 @@ DIFFCOMM=$(git fetch origin --quiet; git rev-list HEAD..."$UPSTREAM" --count)
 if [ "$DIFFCOMM" -gt 0 ]; then
   echo "Pulling $UPSTREAM" >> /home/user/update_log
   git pull
+  yarn ci
   yarn build
 else
   echo "sanu Upto date" >> /home/user/update_log
