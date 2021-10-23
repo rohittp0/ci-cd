@@ -25,4 +25,4 @@ pull_and_build master
 pull_and_build sanu
 pull_and_build nidhin
 
-echo "Everything upto date" >> /home/user/update_log
+echo "Everything upto date @ $(date)" >> /home/user/update_log
