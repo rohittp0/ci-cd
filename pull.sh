@@ -2,7 +2,7 @@
 
 pull_and_build()
 {
-  if [ -d "~/hopital-availabilty-frontend-${1}" ]; then
+  if [ -d ~/hopital-availabilty-frontend-${1} ]; then
     cd ~/hopital-availabilty-frontend-$1
   else
     git clone https://github.com/Trebuchet-ltd/hopital-availabilty-frontend ~/hopital-availabilty-frontend-${1}
