@@ -2,19 +2,19 @@
 
 pull_and_build()
 {
-  if [ -d "~/hopital-availabilty-frontend-${$1}" ]; then
+  if [ -d "~/hopital-availabilty-frontend-${1}" ]; then
     git clone https://github.com/Trebuchet-ltd/hopital-availabilty-frontend "~/hopital-availabilty-frontend-${$1}"
-    cd "~/hopital-availabilty-frontend-${$1}"
+    cd "~/hopital-availabilty-frontend-${1}"
     git switch -c master || git switch master
   else
-    cd "~/hopital-availabilty-frontend-${$1}"
+    cd "~/hopital-availabilty-frontend-${1}"
   fi
   
   UPSTREAM=${1:-'@{u}'}
   DIFFCOMM=$(git fetch origin --quiet; git rev-list HEAD..."$UPSTREAM" --count)
   
   if [ "$DIFFCOMM" -gt 0 ]; then
-    echo "<-- Pulling ${$1}" >> /home/user/update_log
+    echo "<-- Pulling ${1}" >> /home/user/update_log
     git pull
     yarn ci
     yarn stage
