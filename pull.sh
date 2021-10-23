@@ -5,7 +5,7 @@ pull_and_build()
   if [ -d "~/hopital-availabilty-frontend-${1}" ]; then
     cd ~/hopital-availabilty-frontend-$1
   else
-    git clone https://github.com/Trebuchet-ltd/hopital-availabilty-frontend "~/hopital-availabilty-frontend-${1}"
+    git clone https://github.com/Trebuchet-ltd/hopital-availabilty-frontend ~/hopital-availabilty-frontend-${1}
     cd ~/hopital-availabilty-frontend-$1
     git switch -c $1 || git switch $1
   fi
