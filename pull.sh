@@ -1,36 +1,28 @@
 #!/bin/bash
 
-cd /home/user/hopital-availabilty-frontend
+pull_and_build()
+{
+  if [ -d "~/hopital-availabilty-frontend-${$1}" ]; then
+    git clone https://github.com/Trebuchet-ltd/hopital-availabilty-frontend "~/hopital-availabilty-frontend-${$1}"
+    cd "~/hopital-availabilty-frontend-${$1}"
+    git switch -c master || git switch master
+  else
+    cd "~/hopital-availabilty-frontend-${$1}"
+  fi
+  
+  UPSTREAM=${1:-'@{u}'}
+  DIFFCOMM=$(git fetch origin --quiet; git rev-list HEAD..."$UPSTREAM" --count)
+  
+  if [ "$DIFFCOMM" -gt 0 ]; then
+    echo "<-- Pulling ${$1}" >> /home/user/update_log
+    git pull
+    yarn ci
+    yarn stage
+  fi
+}
 
-UPSTREAM=${1:-'@{u}'}
-DIFFCOMM=$(git fetch origin --quiet; git rev-list HEAD..."$UPSTREAM" --count)
-if [ "$DIFFCOMM" -gt 0 ]; then
-  echo "<-- Pulling master" >> /home/user/update_log
-  git pull
-  yarn ci
-  yarn build
-fi
-
-cd /home/user/hopital-availabilty-frontend-nidhin
-
-UPSTREAM=${1:-'@{u}'}
-DIFFCOMM=$(git fetch origin --quiet; git rev-list HEAD..."$UPSTREAM" --count)
-if [ "$DIFFCOMM" -gt 0 ]; then
-  echo "<-- Pulling nidhin" >> /home/user/update_log
-  git pull
-  yarn ci
-  yarn build
-fi
-
-cd /home/user/hopital-availabilty-frontend-sanu
-
-UPSTREAM=${1:-'@{u}'}
-DIFFCOMM=$(git fetch origin --quiet; git rev-list HEAD..."$UPSTREAM" --count)
-if [ "$DIFFCOMM" -gt 0 ]; then
-  echo "<-- Pulling sanu" >> /home/user/update_log
-  git pull
-  yarn ci
-  yarn build
-fi
+pull_and_build master
+pull_and_build sanu
+pull_and_build nidhin
 
 echo "Everything upto date" >> /home/user/update_log
