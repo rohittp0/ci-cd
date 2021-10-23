@@ -126,7 +126,7 @@ server {
         location / {
                 autoindex on;
                 index index.html;
-                root /home/user/hopital-availabilty-frontend/build;
+                root /home/user/hopital-availabilty-frontend-master/build;
                 try_files $uri $uri/ /index.html;
         }
 }
