@@ -7,7 +7,7 @@ pull_and_build()
   else
     git clone https://github.com/Trebuchet-ltd/hopital-availabilty-frontend "~/hopital-availabilty-frontend-${1}"
     cd "~/hopital-availabilty-frontend-${1}"
-    git switch -c master || git switch master
+    git switch -c $1 || git switch $1
   fi
   
   UPSTREAM=${1:-'@{u}'}
