@@ -8,6 +8,7 @@ pull_and_build()
     git clone https://github.com/Trebuchet-ltd/hopital-availabilty-frontend ~/hopital-availabilty-frontend-${1}
     cd ~/hopital-availabilty-frontend-$1
     git switch -c $1 || git switch $1
+    git branch --set-upstream-to origin/$1
   fi
   
   UPSTREAM=${1:-'@{u}'}
@@ -17,7 +18,7 @@ pull_and_build()
     echo "<-- Pulling ${1}" >> /home/user/update_log
     git pull
     yarn ci
-    yarn stage
+    yarn stage &
   fi
 }
 
