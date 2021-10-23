@@ -102,7 +102,7 @@ server {
                 proxy_redirect off;
                 proxy_pass http://127.0.0.1:8080;
         }
-        
+
         location /static {
                 autoindex on;
                 root /var/www/html;
@@ -127,6 +127,7 @@ server {
                 autoindex on;
                 index index.html;
                 root /home/user/hopital-availabilty-frontend/build;
+                try_files $uri $uri/ /index.html;
         }
 }
 
@@ -146,11 +147,12 @@ server {
         ssl_prefer_server_ciphers on;
 
         access_log            /var/log/nginx/jenkins.nidhin.access.log;
-        
+
         location / {
                 autoindex on;
                 index index.html;
                 root /home/user/hopital-availabilty-frontend-nidhin/build;
+                try_files $uri $uri/ /index.html;
         }
 }
 
@@ -170,11 +172,12 @@ server {
         ssl_prefer_server_ciphers on;
 
         access_log            /var/log/nginx/jenkins.sanu.access.log;
-        
+
         location / {
                 autoindex on;
                 index index.html;
                 root /home/user/hopital-availabilty-frontend-sanu/build;
+                try_files $uri $uri/ /index.html;
         }
 }
 
