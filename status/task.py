@@ -13,10 +13,7 @@ from status.models import PullRequest
 
 
 @receiver(post_save, sender=PullRequest)
-def on_save(sender, instance, created, **kwargs):
-    if not created:
-        return
-
+def on_save(sender, instance, **kwargs):
     run_test.delay(instance.id)
 
 
