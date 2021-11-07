@@ -1,11 +1,16 @@
 cd ~ || exit 1
 
-git clone "$1" || echo "Working with pre-cloned repo."
+if [ ! -d "$2" ]; then
+  git clone "$1"
+fi
+
 cd "$2" || exit 2
 
 git fetch -p
 git switch "$3"
-git pull
+git fetch origin "$3"
+git reset --hard FETCH_HEAD
+git clean -df
 
 if [ -f "package.json" ]; then
   echo "Running tests using yarn"

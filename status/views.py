@@ -6,6 +6,7 @@ from rest_framework import status
 
 from status.models import PullRequest
 from status.serializers import PullRequestSerializer
+from status.task import run_test
 
 
 class PullRequestViewSet(viewsets.ModelViewSet):
@@ -24,13 +25,16 @@ class PullRequestViewSet(viewsets.ModelViewSet):
             "url": pull["_links"]["html"]["href"],
             "created_at": pull["created_at"],
             "sha": pull["head"]["sha"],
-            "open": request.data["action"] == "opened" or request.data["action"] == "reopened"
+            "open": request.data["action"] == "opened" or request.data["action"] == "reopened",
+            "test_status": -1
         }
 
         try:
             model = PullRequest.objects.get(url=data["url"])
+            data["test_status"] = -1 if data["open"] else model.test_status
+
             serializer = PullRequestSerializer(model, data=data)
-        except:
+        except PullRequest.DoesNotExist:
             serializer = PullRequestSerializer(data=data)
 
         if not serializer.is_valid():
@@ -46,5 +50,10 @@ class PullRequestViewSet(viewsets.ModelViewSet):
             pull = self.queryset.get(id=pk)
             return HttpResponse(
                 f"<h3>Output</h3><pre><code>{pull.test_output}</code></pre> <h4>Status</h4><h5>{pull.test_status}</h5>")
-        except Exception:
+        except PullRequest.DoesNotExist:
             return Response(status.HTTP_404_NOT_FOUND)
+
+    @action(methods=["get"], detail=True, url_path="rerun")
+    def rerun(self, request, pk):
+        run_test.delay(pk, rerun=True)
+        return Response(status.HTTP_206_PARTIAL_CONTENT)
