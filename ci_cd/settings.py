@@ -38,7 +38,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'django_celery_results',
     'status',
 ]
 
@@ -103,7 +102,6 @@ REST_FRAMEWORK = {
 }
 
 CELERY_BROKER_URL = 'redis://localhost:6379'
-CELERY_RESULT_BACKEND = 'django-db'
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
