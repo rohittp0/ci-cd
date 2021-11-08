@@ -7,14 +7,7 @@ from celery import shared_task
 from dotenv import load_dotenv
 from status.constants import BASE_URL, TEST_PASSED, INTERNAL_ERROR, TEST_FAILED
 
-from django.db.models.signals import post_save
-from django.dispatch import receiver
 from status.models import PullRequest
-
-
-@receiver(post_save, sender=PullRequest)
-def on_save(sender, instance, **kwargs):
-    run_test.delay(instance.id)
 
 
 @shared_task
