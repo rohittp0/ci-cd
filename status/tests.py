@@ -20,11 +20,12 @@ def save_and_update(proc, model, post_params, name):
 
 
 def test_with_yarn(cwd, model, post_params):
+    yarn = "/usr/local/bin/yarn"
     cmd_arrays = [
-        (["yarn", "ci"], "Installing Dependencies"),
-        (["yarn", "test"], "Unit tests"),
-        (["yarn", "lint"], "Lint"),
-        (["yarn", "stage"], "Build")
+        ([yarn, "ci"], "Installing Dependencies"),
+        ([yarn, "test"], "Unit tests"),
+        ([yarn, "lint"], "Lint"),
+        ([yarn, "stage"], "Build")
     ]
 
     code = [save_and_update(subprocess.run(cmd_array, capture_output=True, cwd=cwd), model, post_params, name) for

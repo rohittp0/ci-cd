@@ -14,11 +14,16 @@ from status.tests import test_with_yarn, send_status
 def start_test_script(repo, repo_name, branch, model, post_params):
     home = "/home/user/"
 
+    user = subprocess.run(["whoami"], capture_output=True, cwd=home)
+    output = f"Running tests as {(user.stderr or user.stdout).decode()}\n"
+
+    send_status(output, post_params)
+
     if not os.path.exists(os.path.join("/home/user/", repo_name)):
         clone = subprocess.run(["git", "clone", repo], capture_output=True, cwd=home)
-        output = (clone.stderr or clone.stdout).decode() + "\n"
+        output += (clone.stderr or clone.stdout).decode() + "\n"
     else:
-        output = "Repo already cloned"
+        output += "Repo already cloned"
 
     fetch = subprocess.run(["git", "fetch", "-p"], capture_output=True, cwd=os.path.join(home, repo_name))
     switch = subprocess.run(["git", "switch", branch], capture_output=True, cwd=os.path.join(home, repo_name))
@@ -62,10 +67,16 @@ def run_test(model_id, rerun=False):
     repo = f"git@github.com:{model.repo}"
     repo_name = repo.split("/")[1]
 
-    exit_code = start_test_script(repo, repo_name, model.from_branch, model, [headers, url])
+    try:
+        exit_code = start_test_script(repo, repo_name, model.from_branch, model, [headers, url])
+    except Exception as err:
+        exit_code = 1
+        model.test_status = 1
+        model.test_output += str(err)
+        model.save()
 
     result = json.dumps({
-        "state": "success" if exit_code != 3 else "error",
+        "state": "success" if exit_code == 0 else "error",
         "context": "The Ultimate Test",
         "target_url": f"{BASE_URL}/{model_id}/output/",
         "description": TEST_PASSED if exit_code == 0 else TEST_FAILED
