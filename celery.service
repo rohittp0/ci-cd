@@ -1,0 +1,19 @@
+[Unit]
+Description=A demon to run celery for ci-cd server
+After=network.target
+
+[Service]
+Type=notify
+User=user
+Group=user
+RuntimeDirectory=ci-cd
+WorkingDirectory=/home/user/ci-cd
+ExecStart=/home/user/ci-cd/venv/bin/celery multi start w1 -A ci_cd -l INFO --pidfile=/home/user/logs/celery.pid --logfile=/home/user/logs/celery.log
+ExecReload=/home/user/ci-cd/venv/bin/celery multi restart w1 -A ci_cd -l INFO --pidfile=/home/user/logs/celery.pid --logfile=/home/user/logs/celery.log
+KillMode=mixed
+TimeoutStopSec=5
+PrivateTmp=true
+Type=forking
+
+[Install]
+WantedBy=multi-user.target
