@@ -1,6 +1,6 @@
 import requests
 from django.db.models.signals import post_save
-from rest_framework import viewsets
+from rest_framework import viewsets, permissions
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from django.http import HttpResponse
@@ -8,6 +8,7 @@ from rest_framework import status
 from django.dispatch import receiver
 from django.db.backends.signals import connection_created
 
+from status.constants import headers
 from status.models import PullRequest
 from status.serializers import PullRequestSerializer
 from status.task import run_test
@@ -57,10 +58,10 @@ class PullRequestViewSet(viewsets.ModelViewSet):
         except PullRequest.DoesNotExist:
             return Response(status.HTTP_404_NOT_FOUND)
 
-    @action(methods=["get"], detail=True, url_path="rerun")
+    @action(methods=["get"], detail=True, url_path="rerun", permission_classes=[permissions.IsAuthenticated])
     def rerun(self, request, pk):
         run_test.delay(pk, rerun=True)
-        return Response(status.HTTP_206_PARTIAL_CONTENT)
+        return HttpResponse("<h4>Re-running tests</h4>")
 
 
 @receiver(post_save, sender=PullRequest)
@@ -71,7 +72,6 @@ def on_save(sender, instance, **kwargs):
 
 @receiver(connection_created)
 def on_connection(connection, **kwargs):
-    headers = {'Content-Type': 'application/json'}
     repos = set(PullRequest.objects.values_list('repo', flat=True))
 
     for repo in repos:

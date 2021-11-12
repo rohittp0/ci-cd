@@ -4,8 +4,7 @@ import os
 
 import requests
 from celery import shared_task
-from dotenv import load_dotenv
-from status.constants import BASE_URL, TEST_PASSED, TEST_FAILED
+from status.constants import BASE_URL, TEST_PASSED, TEST_FAILED, headers
 
 from status.models import PullRequest
 from status.tests import test_with_yarn, send_status
@@ -54,12 +53,7 @@ def run_test(model_id, rerun=False):
     if (not model.open or not model.test_status == -1) and not rerun:
         return None
 
-    load_dotenv()
     url = f"https://api.github.com/repos/{model.repo}/statuses/{model.sha}"
-    headers = {
-        'Content-Type': 'application/json',
-        'Authorization': f'token {os.getenv("GIT_HUB_TOKEN")}'
-    }
 
     requests.post(url, headers=headers,
                   data=json.dumps({"state": "pending", "context": "The Ultimate Test", "description": "Running"}))

@@ -15,7 +15,4 @@ class PullRequest(models.Model):
     test_status = models.IntegerField(default=-1)
 
     class Meta:
-        ordering = ['created_at']
-
-    def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
-        super().save(force_insert, force_update, using, update_fields)
+        ordering = ['-created_at']

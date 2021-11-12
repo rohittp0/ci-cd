@@ -1,0 +1,85 @@
+<head>
+    <title>CI-CD Server</title>
+    <style>
+        body {
+            margin: 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0;
+        }
+
+        /* Zebra striping */
+        tr:nth-of-type(odd) {
+            background: #eee;
+        }
+
+        th {
+            background: #3498db;
+            color: white;
+            font-weight: bold;
+        }
+
+        td, th {
+            padding: 10px;
+            border: 1px solid #ccc;
+            text-align: left;
+            font-size: 18px;
+        }
+
+        .button {
+            border: none;
+            color: white;
+            padding: 10px 28px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+        }
+
+        .blue-bg {
+            background-color: #008CBA;
+        }
+
+        .green-bg {
+            background-color: #4CAF50; /* Green */
+        }
+
+        .center {
+            justify-content: center;
+            display: flex;
+        }
+
+    </style>
+</head>
+<body>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Title</th>
+        <th>Created By</th>
+        <th>Created On</th>
+        <th>Status</th>
+        <th class="center">Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for pull in pulls %}
+        <tr>
+            <td data-column="ID">{{ pull.id }}</td>
+            <td data-column="Title"><a href="{{ pull.url }}" target="_blank">{{ pull.title }}</a></td>
+            <td data-column="Created By">{{ pull.created_by }}</td>
+            <td data-column="Created On">{{ pull.created_at }}</td>
+            <td data-column="Status">{{ pull.test_status }}</td>
+            <td data-column="Actions" class="center">
+                <a href="/api/pull_request/{{ pull.id }}/output" class="button blue-bg" target="_blank">Output</a>
+                <a href="/api/pull_request/{{ pull.id }}/rerun" class="button green-bg" target="_blank"> Rerun </a>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+</body>
