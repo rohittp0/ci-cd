@@ -24,10 +24,11 @@ def start_test_script(repo, repo_name, branch, model, post_params):
     else:
         output += "Repo already cloned"
 
+    reset = subprocess.run(["git", "reset", "--hard"], capture_output=True, cwd=os.path.join(home, repo_name))
     fetch = subprocess.run(["git", "fetch", "-p"], capture_output=True, cwd=os.path.join(home, repo_name))
     switch = subprocess.run(["git", "switch", branch], capture_output=True, cwd=os.path.join(home, repo_name))
     pull = subprocess.run(["git", "pull"], capture_output=True, cwd=os.path.join(home, repo_name))
-    output += "\n".join([(proc.stderr or proc.stdout).decode() for proc in [fetch, switch, pull]])
+    output += "\n".join([(proc.stderr or proc.stdout).decode() for proc in [reset, fetch, switch, pull]])
 
     model.test_output = output
     model.save()
