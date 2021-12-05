@@ -18,8 +18,8 @@ def start_test_script(repo, repo_name, branch, model, post_params):
 
     send_status(output, post_params)
 
-    if not os.path.exists(os.path.join("/home/user/", repo_name)):
-        clone = subprocess.run(["git", "clone", repo], capture_output=True, cwd=home)
+    if not os.path.exists(os.path.join("/home/user/", f"{repo_name}-{model.id}")):
+        clone = subprocess.run(["git", "clone", repo, f"{repo_name}-{model.id}"], capture_output=True, cwd=home)
         output += (clone.stderr or clone.stdout).decode() + "\n"
     else:
         output += "Repo already cloned"

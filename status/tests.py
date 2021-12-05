@@ -31,4 +31,10 @@ def test_with_yarn(cwd, model, post_params):
     code = [save_and_update(subprocess.run(cmd_array, capture_output=True, cwd=cwd), model, post_params, name) for
             (cmd_array, name) in cmd_arrays]
 
+    send_status(f"Deploying", post_params)
+
+    deploy = subprocess.run(["cp", "-rf", "build", "../"], capture_output=True, cwd=cwd)
+    model.test_output += f"\n{deploy}"
+    model.save()
+
     return sum(code)
